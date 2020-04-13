@@ -8,6 +8,32 @@ export async function handler(ev) {
     showContextMenu(options, ev.clientX, ev.clientY);
 }
 
+/** Convert an asynchronous function into an event handler
+ * Useful for when you want to fetchmenu elements over the network.
+ * @param {(x:CustomEventInit) => Promise} handler 
+ * @returns {(ev:CustomEvent) => Promise}
+ */
+export function asyncMenuHandler(handler) {
+    return async ev => {
+        ev.stopPropagation();
+        await handler(ev.detail);
+        ev.currentTarget.dispatchEvent(menuEvent(ev.detail));
+    }
+}
+
+/**
+ * 
+ * @param {HTMLElement} element 
+ * @param {HTMLElement[] | () => HTMLElement[]} list 
+ */
+export function addMenuItems(element, list) {
+    var handler;
+    if (typeof list == "function")
+        handler = ev => ev.detail.options.push(...list());
+    else handler = ev => ev.detail.options.push(...list);
+    element.addEventListener("menu", handler);
+}
+
 /**
  * A simple option
  * @param {String} name 
@@ -26,7 +52,7 @@ export const hr = () => document.createElement("hr");
 /**
  * A menu element with sub-elements
  * @param {String} name 
- * @param {() => HTMLElement[]} list 
+ * @param {HTMLElement[] | () => HTMLElement[]} list 
  * @param {undefined|VoidFunction} action
  */
 export function subgroup(name, list, action=undefined) {
@@ -94,14 +120,16 @@ export function showContextMenu(options, x, y) {
 /**
  * Construct and position a submenu by an item from an elements callback
  * @param {HTMLElement} parentElement 
- * @param {() => HTMLElement[]} list 
+ * @param {HTMLElement[] | () => HTMLElement[]} list 
  */
 function createSubmenu(parentElement, list)
 {
     // === Create new submenu ===
     const submenu = document.createElement("div");
     submenu.classList.add("context-menu");
-    submenu.append(...list());
+    if (typeof list == "function")
+        submenu.append(...list());
+    else submenu.append(...list);
     document.body.append(submenu);
     // === Positioning ===
     const parent_rect = parentElement.getBoundingClientRect();
@@ -144,7 +172,7 @@ function CloseOnInput(menu) {
  */
 function makeContextMenu(element) {
     const detail = { options: [] }
-    const build_menu_event = new CustomEvent("menu", { bubbles: true, detail });
+    const build_menu_event = menuEvent(detail);
     const root = element.getRootNode({ composed: true });
     const p = new Promise((res, rej) => {
         root.addEventListener( "menu", ev => res(detail.options), {once:true} );
@@ -152,6 +180,11 @@ function makeContextMenu(element) {
     });
     element.dispatchEvent(build_menu_event);
     return p;
+}
+
+/** @param {CustomEventInit} detail */
+function menuEvent(detail) {
+    return new CustomEvent("menu", { bubbles: true, detail });
 }
 
 /**

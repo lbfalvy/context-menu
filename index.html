@@ -17,38 +17,38 @@
         }
     </style>
     <script type="module">
-        import { handler, option, subgroup, hr } from "./context_menu.mjs"
-        // Testing stuff
-        document.body.addEventListener("menu", ev => {
-            ev.detail.options.push(
-                subgroup("Say something", () => [
-                    option("Say hello", () => alert("hello")),
-                    option("Say goodbye", () => alert("kthxbai"))
-                ]), 
-                hr(),
-                option("Log the event target",  () => console.log(ev.target)),
-                subgroup("Log something", () => [
-                    option("Log the event target", () => console.log(ev.target)),
-                    option("Log the current date", () => console.log(Date.now()))
-                ])
-            );
-        });
+        import { handler, option, subgroup, addMenuItems, hr } from "./context_menu.mjs"
+        // Shorthand format for the simplest case
+        addMenuItems(document.body, [
+            subgroup("Say something", [
+                option("Say hello", () => alert("hello")),
+                option("Say goodbye", () => alert("kthxbai"))
+            ]), 
+            hr(),
+            option("Log the event target",  () => console.log(ev.target)),
+            subgroup("Log something", [
+                option("Log the event target", () => console.log(ev.target)),
+                option("Log the current date", () => console.log(Date.now()))
+            ])
+        ]);
+        // Full format
         const colored = document.getElementById("colored");
         colored.addEventListener("menu", ev => {
             ev.detail.options.push(
-                subgroup("Change color", () => [
+                subgroup("Change color", [
                     option("red", () => colored.style.background = "red"),
                     option("blue", () => colored.style.background = "blue"),
                     option("green", () => colored.style.background = "green")
                 ])
             );
         });
+        // Define the reactive surface. You can make this more specific if not
+        // everything has a context menu.
         document.body.oncontextmenu = handler;
     </script>
 </head>
 <body>
-    <div id="colored">
-
-    </div>
+    <div id="colored"></div>
+    <div id="damn">0</div>
 </body>
 </html>
