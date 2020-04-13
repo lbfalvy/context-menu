@@ -175,7 +175,7 @@ function makeContextMenu(element) {
     const build_menu_event = menuEvent(detail);
     const root = element.getRootNode({ composed: true });
     const p = new Promise((res, rej) => {
-        root.addEventListener( "menu", ev => res(detail.options), {once:true} );
+        root.addEventListener( "menu", ev => res(ev.detail.options), {once:true} );
         setTimeout(rej, 5000);
     });
     element.dispatchEvent(build_menu_event);
