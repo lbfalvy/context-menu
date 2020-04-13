@@ -1,0 +1,28 @@
+.context-menu {
+    display: inline-block;
+    position: fixed;
+    border: 1px solid #ccc;
+    background-color: #eee;
+}
+.context-menu > * {
+    padding: 3px;
+    cursor: default;
+}
+.context-menu hr {
+    padding: 0px;
+    margin: 0px;
+    color: #ddd;
+}
+.context-menu .clickable:hover { background: #ccc;}
+.context-menu .clickable { cursor: pointer; }
+.context-menu .clickable > * { cursor: unset; }
+.context-menu .subgroup::after { 
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-top: 3px solid #888;
+    border-right: 3px solid #888;
+    margin-top: 5px;
+    transform: rotate(45deg);
+    float: right;
+}

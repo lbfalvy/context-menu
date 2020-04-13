@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom context menu example</title>
+    <link rel="stylesheet" href="grid.css">
+    <style>
+        body {
+            height: 100vh;
+            margin: 0px;
+        }
+        #colored {
+            height: 100px;
+            width: 100px;
+            background-color: red;
+        }
+    </style>
+    <script type="module">
+        import { handler, option, subgroup, hr } from "./context_menu.mjs"
+        // Testing stuff
+        document.body.addEventListener("menu", ev => {
+            ev.detail.options.push(
+                subgroup("Say something", () => [
+                    option("Say hello", () => alert("hello")),
+                    option("Say goodbye", () => alert("kthxbai"))
+                ]), 
+                hr(),
+                option("Log the event target",  () => console.log(ev.target)),
+                subgroup("Log something", () => [
+                    option("Log the event target", () => console.log(ev.target)),
+                    option("Log the current date", () => console.log(Date.now()))
+                ])
+            );
+        });
+        const colored = document.getElementById("colored");
+        colored.addEventListener("menu", ev => {
+            ev.detail.options.push(
+                subgroup("Change color", () => [
+                    option("red", () => colored.style.background = "red"),
+                    option("blue", () => colored.style.background = "blue"),
+                    option("green", () => colored.style.background = "green")
+                ])
+            );
+        });
+        document.body.oncontextmenu = handler;
+    </script>
+</head>
+<body>
+    <div id="colored">
+
+    </div>
+</body>
+</html>
