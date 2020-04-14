@@ -17,7 +17,7 @@ export function asyncMenuHandler(handler) {
     return async ev => {
         ev.stopPropagation();
         await handler(ev.detail);
-        ev.currentTarget.dispatchEvent(menuEvent(ev.detail));
+        ev.currentTarget.parentElement.dispatchEvent(menuEvent(ev.detail));
     }
 }
 
