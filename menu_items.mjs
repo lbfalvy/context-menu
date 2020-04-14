@@ -44,9 +44,11 @@ export function subgroup(name, list, action=undefined) {
         submenu = null;
     }
     const set_remove_timer = () => {
+        option.parentElement.onmouseleave?.call();
         removeTimer = setTimeout(remove_submenu, 1000);
     }
     const clear_remove_timer = () => {
+        option.parentElement.onmouseenter?.call();
         clearTimeout(removeTimer);
         removeTimer = null;
     }
