@@ -17,7 +17,8 @@
         }
     </style>
     <script type="module">
-        import { handler, option, subgroup, addMenuItems, hr } from "./context_menu.mjs"
+        import { handler, addMenuItems } from "./context_menu.mjs"
+        import { option, subgroup, hr } from "./menu_items.mjs"
         // Shorthand format for the simplest case
         addMenuItems(document.body, [
             subgroup("Say something", [ // Collection
@@ -50,6 +51,5 @@
 </head>
 <body>
     <div id="colored"></div>
-    <div id="damn">0</div>
 </body>
 </html>
