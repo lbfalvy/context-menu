@@ -5,7 +5,7 @@ import { abovePos, leftOfPos, rightOfPos, belowPos, getComputedSize, getMaxSize 
  * @param {String} name 
  * @param {VoidFunction} action 
  */
-export function option(name, action) {
+export function option(name, action=null) {
     const simple_option = document.createElement("div");
     if (action) {
         simple_option.classList.add("clickable");
@@ -38,6 +38,7 @@ export function subgroup(name, list, action=undefined) {
     var removeTimer = null;
     const remove_submenu = () => {
         clear_remove_timer();
+        submenu?.removeSubmenu?.call();
         submenu?.remove();
         removeTimer = null;
         submenu = null;
