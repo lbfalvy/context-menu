@@ -41,9 +41,12 @@ export function addMenuItems(element, list) {
  */
 export function option(name, action) {
     const simple_option = document.createElement("div");
-    simple_option.classList.add("clickable")
+    if (action) {
+        simple_option.classList.add("clickable");
+        simple_option.onclick = action;
+    } 
+    else simple_option.classList.add("disabled");
     simple_option.textContent = name;
-    simple_option.onclick = action;
     return simple_option;
 }
 

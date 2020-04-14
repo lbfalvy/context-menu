@@ -26,3 +26,4 @@
     transform: rotate(45deg);
     float: right;
 }
+.context-menu .disabled { color: #999; }

@@ -20,12 +20,13 @@
         import { handler, option, subgroup, addMenuItems, hr } from "./context_menu.mjs"
         // Shorthand format for the simplest case
         addMenuItems(document.body, [
-            subgroup("Say something", [
-                option("Say hello", () => alert("hello")),
+            subgroup("Say something", [ // Collection
+                option("Say hello", () => alert("hello")), // Simple optoion
                 option("Say goodbye", () => alert("kthxbai"))
             ]), 
-            hr(),
+            hr(), // Separator
             option("Log the event target",  () => console.log(ev.target)),
+            option("Solve the Riemann hypothesis", null), // Disabled option
             subgroup("Log something", [
                 option("Log the event target", () => console.log(ev.target)),
                 option("Log the current date", () => console.log(Date.now()))
