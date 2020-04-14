@@ -15,9 +15,23 @@
             width: 100px;
             background-color: red;
         }
+        #menubar {
+            background-color: #eee;
+        }
+        #menubar > * {
+            display: inline-block;
+            padding: 3px 7px;
+            margin: 0px;
+            border-left: 1px solid #ccc;
+            border-right: 1px solid #ccc;
+            cursor: pointer;
+        }
+        #menubar > *:hover {
+            background: rgba(255,255,255,0.3);
+        }
     </style>
     <script type="module">
-        import { handler, addMenuItems } from "./context_menu.mjs"
+        import { handler, addMenuItems, addDropdown } from "./context_menu.mjs"
         import { option, subgroup, hr } from "./menu_items.mjs"
         // Shorthand format for the simplest case
         addMenuItems(document.body, [
@@ -47,9 +61,56 @@
         // Define the reactive surface. You can make this more specific if not
         // everything has a context menu.
         document.body.oncontextmenu = handler;
+        addDropdown(document.getElementById("project"), [
+            option("New", () => {}),
+            option("Open", () => {}),
+            subgroup("new from template", [
+                option("Stock templates...", () => {}),
+                option("Organization templates..."),
+                option("User templates...", () => {}),
+                option("Template from URI", () => {}),
+                option("Template from file", () => {})
+            ]),
+            hr(),
+            option("Transfer to WebDAV", () => {}),
+            option("Transfer to git", () => {}),
+            option("Download project", () => {}),
+        ]);
+        addDropdown(document.getElementById("edit"), [
+            option("Undo", () => {}),
+            option("Redo", null),
+            hr(),
+            option("Find in open", () => {}),
+            option("Find in project", () => {}),
+            option("Find and Replace", () => {}),
+            option("References", () => {})
+        ])
+        addDropdown(document.getElementById("plugins"), [
+            option("Plugin manager", () => {}),
+            subgroup("Get plugins", [
+                option("Store", () => {}),
+                subgroup("From project", [
+                    option("Organization projects..."),
+                    option("User projects...", () => {}),
+                    option("Project from URI", () => {}),
+                    option("Project from file", () => {})
+                ]),
+                option("Upload", () => {})
+            ])
+        ])
     </script>
 </head>
 <body>
+    <div id="menubar">
+        <div id="project">Project</div><div 
+        id="edit">Edit</div><div 
+        id="view">View</div><div 
+        id="jobs">Jobs</div><div 
+        id="plugins">Plug-ins</div><div 
+        id="workspace">Workspace</div><div 
+        id="org">Organization</div><div 
+        id="user">User</div>
+    </div>
     <div id="colored"></div>
 </body>
 </html>

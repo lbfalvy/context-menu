@@ -22,3 +22,5 @@ An efficient, extensible and very flexible context menu for the web.
    Adds a menu handler to `element` which renders a menu using `list`.
  - function `asyncMenuHandler( handler: {options: HTMLElement[]} => Promise ): CustomEventHandler`  
    Converts an async function into an async menu handler by stopping and re-dispatching the event.
+ - function `addDropdown( element: HTMLElement, list: HTMLElement[] | () => HTMLElement[] )`
+   Adds a dropdown context menu to an element. Can be used for a multilevel menubar for example.

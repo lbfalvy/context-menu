@@ -7,7 +7,8 @@ import { abovePos, leftOfPos, rightOfPos, belowPos, getComputedSize, getMaxSize 
 export async function handler(ev) {
     ev.preventDefault();
     const options = await makeContextMenu(ev.target);
-    showContextMenu(options, ev.clientX, ev.clientY);
+    // Wait for the event to finish bubbling
+    setTimeout(() => showContextMenu(options, ev.clientX, ev.clientY), 0);
 }
 
 /** Convert an asynchronous function into an event handler
@@ -24,9 +25,11 @@ export function asyncMenuHandler(handler) {
 }
 
 /**
- * 
+ * Add the given menu items to this element and all of its children.
+ * Returns the handler for use with removeEventListener (menu event)
  * @param {HTMLElement} element 
  * @param {HTMLElement[] | () => HTMLElement[]} list 
+ * @returns {(ev:CustomEvent<{options:HTMLElement[]}>)=>undefined}
  */
 export function addMenuItems(element, list) {
     var handler;
@@ -34,6 +37,28 @@ export function addMenuItems(element, list) {
         handler = ev => ev.detail.options.push(...list());
     else handler = ev => ev.detail.options.push(...list);
     element.addEventListener("menu", handler);
+    return handler;
+}
+
+/**
+ * Add a dynamic dropdown to an element.
+ * Returns the handler for use with removeEventListener (click event)
+ * @param {HTMLElement} element 
+ * @param {HTMLElement[] | () => HTMLElement[]} list 
+ * @returns {(ev:MouseEvent) => undefined}
+ */
+export function addDropdown(element, list) {
+    const listener = ev => {
+        const rect = element.getBoundingClientRect();
+        // Wait for the event to finish bubbling
+        setTimeout( () => {
+            if (typeof list == "function")
+                showContextMenu(list(), rect.left, rect.bottom);
+            else showContextMenu(list, rect.left, rect.bottom);
+        }, 0 );
+    }
+    element.addEventListener("click", listener);
+    return listener;
 }
 
 /**
@@ -68,14 +93,11 @@ function CloseOnInput(menu) {
         document.removeEventListener( "click", close );
         document.removeEventListener( "contextmenu", close );
     }
-    const close_on_contextmenu = () => {
-        document.addEventListener( "contextmenu", close );
-    }
     const close_on_esc = ev => {
         if (ev.key != "Escape") return;
         close();
     };
-    document.addEventListener( "contextmenu", close_on_contextmenu, {once:true} );
+    document.addEventListener( "contextmenu", close );
     document.addEventListener( "click", close );
     document.addEventListener( "keydown", close_on_esc );
 }

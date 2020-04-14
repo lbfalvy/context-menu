@@ -13,7 +13,8 @@
     margin: 0px;
     color: #ddd;
 }
-.context-menu .clickable:hover { background: #ccc;}
+.context-menu .clickable:hover, 
+.context-menu .clickable.active { background: #ccc;}
 .context-menu .clickable { cursor: pointer; }
 .context-menu .clickable > * { cursor: unset; }
 .context-menu .subgroup::after { 
