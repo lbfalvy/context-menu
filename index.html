@@ -67,14 +67,14 @@
             subgroup("new from template", [
                 option("Stock templates...", () => {}),
                 option("Organization templates..."),
-                option("User templates...", () => {}),
+                option("User templates...", () => {}, "./account.svg"),
                 option("Template from URI", () => {}),
                 option("Template from file", () => {})
             ]),
             hr(),
             option("Transfer to WebDAV", () => {}),
             option("Transfer to git", () => {}),
-            option("Download project", () => {}),
+            option("Download project", () => {}, "./account.svg"),
         ]);
         addDropdown(document.getElementById("edit"), [
             option("Undo", () => {}),

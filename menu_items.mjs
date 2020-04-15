@@ -2,17 +2,19 @@ import { abovePos, leftOfPos, rightOfPos, belowPos, getComputedSize, getMaxSize 
 
 /**
  * A simple option
- * @param {String} name 
- * @param {VoidFunction} action 
+ * @param {String} name
+ * @param {VoidFunction} action
+ * @param {String} icon_url 
+ * @returns {HTMLElement}
  */
-export function option(name, action=null) {
+export function option(name, action=null, icon_url=null) {
     const simple_option = document.createElement("div");
     if (action) {
         simple_option.classList.add("clickable");
         simple_option.onclick = action;
     } 
     else simple_option.classList.add("disabled");
-    simple_option.textContent = name;
+    simple_option.append(getIcon(icon_url), name);
     return simple_option;
 }
 
@@ -22,11 +24,12 @@ export const hr = () => document.createElement("hr");
  * A menu element with sub-elements
  * @param {String} name 
  * @param {HTMLElement[] | () => HTMLElement[]} list 
+ * @param {String} icon_url
  * @param {undefined|VoidFunction} action
  */
-export function subgroup(name, list, action=undefined) {
+export function subgroup(name, list, icon_url=null, action=undefined) {
     const option = document.createElement("div");
-    option.textContent = name;
+    option.append(getIcon(icon_url), name);
     option.classList.add("subgroup");
     if (action) {
         option.classList.add("clickable");
@@ -68,6 +71,25 @@ export function subgroup(name, list, action=undefined) {
     };
     option.onmouseleave = set_remove_timer;
     return option;
+}
+
+function getIcon(icon_url) {
+    if (icon_url) {
+        const img = document.createElement("img");
+        img.src = icon_url;
+        img.alt = "";
+        img.style.objectFit = "contain";
+        img.style.width = "1em";
+        img.style.height = "1em";
+        img.style.marginRight = "5px";
+        img.style.verticalAlign = "text-top";
+        return img;
+    } else {
+        const placeholder = document.createElement("span");
+        placeholder.style.display = "inline-block";
+        placeholder.style.width = "calc(1em + 5px)";
+        return placeholder;
+    }
 }
 
 /**

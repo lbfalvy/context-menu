@@ -9,6 +9,9 @@
     cursor: default;
     white-space: pre-wrap;
 }
+.context-menu img {
+    border: none;
+}
 .context-menu hr {
     padding: 0px;
     margin: 0px;
