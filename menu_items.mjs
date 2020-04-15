@@ -39,16 +39,15 @@ export function subgroup(name, list, action=undefined) {
     const remove_submenu = () => {
         clear_remove_timer();
         submenu?.removeSubmenu?.call();
+        option.parentElement.removeSubmenu = null;
         submenu?.remove();
         removeTimer = null;
         submenu = null;
     }
     const set_remove_timer = () => {
-        option.parentElement.onmouseleave?.call();
         removeTimer = setTimeout(remove_submenu, 1000);
     }
     const clear_remove_timer = () => {
-        option.parentElement.onmouseenter?.call();
         clearTimeout(removeTimer);
         removeTimer = null;
     }
@@ -57,8 +56,14 @@ export function subgroup(name, list, action=undefined) {
             option.parentElement.removeSubmenu?.call();
             option.parentElement.removeSubmenu = remove_submenu;
             submenu = createSubmenu(option, list);
-            submenu.onmouseenter = clear_remove_timer;
-            submenu.onmouseleave = set_remove_timer;
+            submenu.onmouseenter = () => {
+                option.parentElement.onmouseenter?.call();
+                clear_remove_timer();
+            }
+            submenu.onmouseleave = () => {
+                option.parentElement.onmouseleave?.call();
+                set_remove_timer();
+            }
         } else clear_remove_timer();
     };
     option.onmouseleave = set_remove_timer;

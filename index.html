@@ -92,6 +92,16 @@
                 subgroup("From project", [
                     option("Organization projects..."),
                     option("User projects...", () => {}),
+                    subgroup("deep submenu", [
+                        option("Nice", () => {}),
+                        option("Does it work?"),
+                        subgroup("This is actually a debug item", [
+                            option("But I figured if I fixed it, \nI might as well showcase that I did.", () => alert("So as you can see, menus can go on for a long while.")),
+                            subgroup("Line breaks are ugly", [
+                                option("Don't do them.", () => alert("They will only appear where you specify it."))
+                            ])
+                        ])
+                    ]),
                     option("Project from URI", () => {}),
                     option("Project from file", () => {})
                 ]),

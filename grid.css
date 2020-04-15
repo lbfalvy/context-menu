@@ -7,6 +7,7 @@
 .context-menu > * {
     padding: 3px;
     cursor: default;
+    white-space: pre-wrap;
 }
 .context-menu hr {
     padding: 0px;
