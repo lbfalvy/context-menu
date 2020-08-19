@@ -40,10 +40,10 @@
                 option("Say goodbye", () => alert("kthxbai"))
             ]), 
             hr(), // Separator
-            option("Log the event target",  () => console.log(ev.target)),
+            option("Log the event target",  ev => console.log(ev.target)),
             option("Solve the Riemann hypothesis", null), // Disabled option
             subgroup("Log something", [
-                option("Log the event target", () => console.log(ev.target)),
+                option("Log the event target", ev => console.log(ev.target)),
                 option("Log the current date", () => console.log(Date.now()))
             ])
         ]);
